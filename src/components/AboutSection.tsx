@@ -30,13 +30,13 @@ const AboutSection = () => {
   const internships = [
     {
       company: "Equator",
-      role: "Intern",
-      description: "Working on blockchain and DeFi projects"
+      role: "Web Developer & AI Engineer Intern",
+      description: "Developing web applications and AI solutions for modern business challenges"
     },
     {
       company: "Codeveda",
-      role: "Intern", 
-      description: "Developing decentralized applications"
+      role: "Machine Learning Intern", 
+      description: "Developing AI models and working on neural network implementations"
     }
   ];
 

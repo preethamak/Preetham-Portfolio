@@ -5,20 +5,45 @@ import SkillsSection from "@/components/SkillsSection";
 import ProjectsSection from "@/components/ProjectsSection";
 import ContactSection from "@/components/ContactSection";
 import Footer from "@/components/Footer";
+import Terminal from "@/components/Terminal";
+import { TerminalProvider } from "@/hooks/useTerminal";
 
 const Index = () => {
+  const navigateToSection = (section: string) => {
+    const element = document.getElementById(section);
+    if (element) {
+      element.scrollIntoView({ 
+        behavior: 'smooth',
+        block: 'start'
+      });
+    }
+  };
+
   return (
-    <div className="min-h-screen">
-      <Navigation />
-      <main>
-        <HeroSection />
-        <AboutSection />
-        <SkillsSection />
-        <ProjectsSection />
-        <ContactSection />
-      </main>
-      <Footer />
-    </div>
+    <TerminalProvider>
+      <div className="min-h-screen">
+        <Navigation />
+        <main>
+          <section id="hero">
+            <HeroSection />
+          </section>
+          <section id="about">
+            <AboutSection />
+          </section>
+          <section id="skills">
+            <SkillsSection />
+          </section>
+          <section id="projects">
+            <ProjectsSection />
+          </section>
+          <section id="contact">
+            <ContactSection />
+          </section>
+        </main>
+        <Footer />
+        <Terminal onNavigate={navigateToSection} />
+      </div>
+    </TerminalProvider>
   );
 };
 

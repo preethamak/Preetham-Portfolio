@@ -113,23 +113,9 @@ const ProjectsSection = () => {
                     </div>
                   </div>
 
-                  {/* Action Buttons */}
-                  <div className="flex gap-4">
-                    <Button 
-                      className="bg-gradient-primary hover:glow-primary transition-smooth"
-                      size="sm"
-                    >
-                      <ExternalLink className="w-4 h-4 mr-2" />
-                      View Details
-                    </Button>
-                    <Button 
-                      variant="outline" 
-                      size="sm"
-                      className="border-primary text-primary hover:bg-primary hover:text-primary-foreground transition-smooth"
-                    >
-                      <Github className="w-4 h-4 mr-2" />
-                      Source Code
-                    </Button>
+                  {/* Links Coming Soon */}
+                  <div className="mt-4">
+                    <p className="text-sm text-muted-foreground italic">Project links coming soon...</p>
                   </div>
                 </div>
 
