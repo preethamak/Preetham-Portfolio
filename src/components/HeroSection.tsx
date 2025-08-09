@@ -30,10 +30,10 @@ const HeroSection = () => {
               className="bg-gradient-primary hover:glow-primary transition-smooth"
               asChild
             >
-              <a href="mailto:preethamak07@gmail.com">
-                <Mail className="w-5 h-5 mr-2" />
-                Get In Touch
-              </a>
+               <a href="https://mail.google.com/mail/?view=cm&fs=1&to=preethamak07@gmail.com" target="_blank" rel="noopener noreferrer">
+                 <Mail className="w-5 h-5 mr-2" />
+                 Get In Touch
+               </a>
             </Button>
             <Button 
               variant="outline" 
@@ -87,11 +87,11 @@ const HeroSection = () => {
                     <Github className="w-5 h-5" />
                   </a>
                 </Button>
-                <Button size="icon" variant="ghost" className="hover:text-primary transition-smooth" asChild>
-                  <a href="mailto:preethamak07@gmail.com">
-                    <Mail className="w-5 h-5" />
-                  </a>
-                </Button>
+                 <Button size="icon" variant="ghost" className="hover:text-primary transition-smooth" asChild>
+                   <a href="https://mail.google.com/mail/?view=cm&fs=1&to=preethamak07@gmail.com" target="_blank" rel="noopener noreferrer">
+                     <Mail className="w-5 h-5" />
+                   </a>
+                 </Button>
               </div>
             </div>
           </Card>

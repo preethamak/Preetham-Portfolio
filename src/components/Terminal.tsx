@@ -67,11 +67,38 @@ const Terminal: React.FC<TerminalProps> = ({ onNavigate }) => {
       setHistory([]);
       return [];
     },
-    '/theme': () => {
+    '/theme': (args?: string) => {
+      const newTheme = args?.toLowerCase();
+      const validThemes = ['dark', 'light'];
+      
+      if (!newTheme) {
+        const current = document.documentElement.classList.contains('light') ? 'light' : 'dark';
+        return [`Current website theme: ${current}`, 'Usage: /theme [dark|light]'];
+      }
+      
+      if (validThemes.includes(newTheme)) {
+        const root = document.documentElement;
+        root.classList.remove('light', 'dark');
+        root.classList.add(newTheme);
+        return [`Website theme changed to: ${newTheme}`];
+      }
+      
+      return [`Invalid theme: ${newTheme}`, 'Available themes: dark, light'];
+    },
+    '/mode': (args?: string) => {
+      const newMode = args?.toLowerCase();
       const themes: Array<'matrix' | 'cyber' | 'classic'> = ['matrix', 'cyber', 'classic'];
-      const nextTheme = themes[(themes.indexOf(theme) + 1) % themes.length];
-      setTheme(nextTheme);
-      return [`Theme switched to: ${nextTheme}`];
+      
+      if (!newMode) {
+        return [`Current terminal mode: ${theme}`, 'Usage: /mode [matrix|cyber|classic]'];
+      }
+      
+      if (themes.includes(newMode as any)) {
+        setTheme(newMode as any);
+        return [`Terminal mode switched to: ${newMode}`];
+      }
+      
+      return [`Invalid mode: ${newMode}`, 'Available modes: matrix, cyber, classic'];
     },
     '/matrix': () => {
       // Trigger matrix effect
@@ -127,16 +154,17 @@ const Terminal: React.FC<TerminalProps> = ({ onNavigate }) => {
 
   const executeCommand = (input: string) => {
     const trimmedInput = input.trim();
-    const command = commands[trimmedInput as keyof typeof commands];
+    const [commandName, ...args] = trimmedInput.split(' ');
+    const command = commands[commandName as keyof typeof commands];
     
     let output: string[];
     if (command) {
-      output = command();
+      output = command(args.join(' '));
     } else if (trimmedInput === '') {
       output = [];
     } else {
       output = [
-        `Command not found: ${trimmedInput}`,
+        `Command not found: ${commandName}`,
         'Type /help for available commands',
         'Did you mean one of these?',
         ...allCommands.slice(0, 3).map(cmd => `  ${cmd}`)

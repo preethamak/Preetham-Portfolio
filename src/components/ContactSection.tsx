@@ -8,7 +8,7 @@ const ContactSection = () => {
       icon: <Mail className="w-6 h-6" />,
       label: "Email",
       value: "preethamak07@gmail.com",
-      href: "mailto:preethamak07@gmail.com",
+      href: "https://mail.google.com/mail/?view=cm&fs=1&to=preethamak07@gmail.com",
       description: "Best way to reach me for opportunities"
     },
     {
@@ -134,10 +134,10 @@ const ContactSection = () => {
                   className="bg-gradient-primary hover:glow-primary transition-smooth w-full"
                   asChild
                 >
-                  <a href="mailto:preethamak07@gmail.com">
-                    <Mail className="w-5 h-5 mr-2" />
-                    Send me an Email
-                  </a>
+                   <a href="https://mail.google.com/mail/?view=cm&fs=1&to=preethamak07@gmail.com" target="_blank" rel="noopener noreferrer">
+                     <Mail className="w-5 h-5 mr-2" />
+                     Send me an Email
+                   </a>
                 </Button>
               </div>
             </Card>

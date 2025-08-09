@@ -37,10 +37,12 @@ const Footer = () => {
           <div className="space-y-4">
             <h4 className="font-semibold text-primary">Get in Touch</h4>
             <div className="space-y-2">
-              <a 
-                href="mailto:preethamak07@gmail.com"
-                className="block text-muted-foreground hover:text-primary transition-smooth"
-              >
+               <a 
+                 href="https://mail.google.com/mail/?view=cm&fs=1&to=preethamak07@gmail.com"
+                 target="_blank"
+                 rel="noopener noreferrer"
+                 className="block text-muted-foreground hover:text-primary transition-smooth"
+               >
                 preethamak07@gmail.com
               </a>
               <a 
@@ -76,11 +78,11 @@ const Footer = () => {
                 <Linkedin className="w-5 h-5" />
               </a>
             </Button>
-            <Button size="icon" variant="ghost" className="hover:text-primary transition-smooth" asChild>
-              <a href="mailto:preethamak07@gmail.com">
-                <Mail className="w-5 h-5" />
-              </a>
-            </Button>
+             <Button size="icon" variant="ghost" className="hover:text-primary transition-smooth" asChild>
+               <a href="https://mail.google.com/mail/?view=cm&fs=1&to=preethamak07@gmail.com" target="_blank" rel="noopener noreferrer">
+                 <Mail className="w-5 h-5" />
+               </a>
+             </Button>
           </div>
         </div>
 

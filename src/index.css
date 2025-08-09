@@ -93,6 +93,56 @@ All colors MUST be HSL.
     --sidebar-border: 220 20% 15%;
     --sidebar-ring: 172 100% 50%;
   }
+
+  .light {
+    /* Premium Light Theme - Elegant & Modern */
+    --background: 210 60% 98%;
+    --foreground: 215 25% 15%;
+
+    --card: 210 100% 99%;
+    --card-foreground: 215 25% 15%;
+
+    --popover: 210 60% 99%;
+    --popover-foreground: 215 25% 15%;
+
+    /* Vibrant primary colors for light mode */
+    --primary: 240 100% 55%;
+    --primary-foreground: 210 60% 98%;
+
+    --secondary: 210 15% 92%;
+    --secondary-foreground: 215 25% 20%;
+
+    --muted: 210 20% 95%;
+    --muted-foreground: 215 15% 45%;
+
+    --accent: 260 100% 60%;
+    --accent-foreground: 210 60% 98%;
+
+    --destructive: 0 84% 50%;
+    --destructive-foreground: 210 40% 98%;
+
+    --border: 210 20% 88%;
+    --input: 210 15% 92%;
+    --ring: 240 100% 55%;
+
+    /* Light theme gradients */
+    --gradient-primary: linear-gradient(135deg, hsl(240 100% 55%) 0%, hsl(260 100% 60%) 100%);
+    --gradient-secondary: linear-gradient(135deg, hsl(210 100% 99%) 0%, hsl(210 15% 92%) 100%);
+    --gradient-accent: linear-gradient(90deg, hsl(240 100% 55%) 0%, hsl(260 100% 60%) 50%, hsl(240 100% 55%) 100%);
+    
+    /* Elegant glows for light mode */
+    --glow-primary: 0 0 40px hsl(240 100% 55% / 0.2);
+    --glow-secondary: 0 0 25px hsl(240 100% 55% / 0.1);
+
+    --sidebar-background: 210 50% 96%;
+    --sidebar-foreground: 215 25% 20%;
+    --sidebar-primary: 240 100% 55%;
+    --sidebar-primary-foreground: 210 60% 98%;
+    --sidebar-accent: 210 15% 92%;
+    --sidebar-accent-foreground: 215 25% 20%;
+    --sidebar-border: 210 20% 88%;
+    --sidebar-ring: 240 100% 55%;
+  }
 }
 
 @layer base {
@@ -102,10 +152,21 @@ All colors MUST be HSL.
 
   body {
     @apply bg-background text-foreground font-mono;
+    transition: background-color 0.3s ease, color 0.3s ease;
+  }
+
+  .dark body {
     background-image: 
       radial-gradient(circle at 20% 80%, hsl(172 100% 50% / 0.1) 0%, transparent 50%),
       radial-gradient(circle at 80% 20%, hsl(200 100% 50% / 0.05) 0%, transparent 50%),
       linear-gradient(to bottom, hsl(220 27% 5%), hsl(220 25% 4%));
+  }
+
+  .light body {
+    background-image: 
+      radial-gradient(circle at 25% 75%, hsl(240 100% 55% / 0.08) 0%, transparent 50%),
+      radial-gradient(circle at 75% 25%, hsl(260 100% 60% / 0.05) 0%, transparent 50%),
+      linear-gradient(135deg, hsl(210 60% 98%) 0%, hsl(210 50% 96%) 50%, hsl(210 60% 99%) 100%);
   }
 
   html {
