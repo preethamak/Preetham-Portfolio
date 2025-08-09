@@ -159,3 +159,41 @@ All colors MUST be HSL.
   pointer-events: none;
   z-index: 9999;
 }
+
+/* Custom Cursor and Effects */
+.custom-cursor-dot {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 6px;
+  height: 6px;
+  border-radius: 9999px;
+  background: hsl(var(--primary));
+  pointer-events: none;
+  z-index: 9998;
+  transform: translate3d(-50%, -50%, 0);
+  transition: opacity 0.2s ease;
+}
+
+.custom-cursor-ring {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 36px;
+  height: 36px;
+  border-radius: 9999px;
+  border: 1px solid hsl(var(--primary) / 0.5);
+  box-shadow: 0 0 40px hsl(var(--primary) / 0.15);
+  pointer-events: none;
+  z-index: 9997;
+  transform: translate3d(-50%, -50%, 0);
+  transition: var(--transition-smooth);
+  backdrop-filter: blur(1px);
+}
+
+@media (pointer: coarse) {
+  .custom-cursor-dot,
+  .custom-cursor-ring {
+    display: none;
+  }
+}

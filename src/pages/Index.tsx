@@ -7,6 +7,7 @@ import ContactSection from "@/components/ContactSection";
 import Footer from "@/components/Footer";
 import Terminal from "@/components/Terminal";
 import { TerminalProvider } from "@/hooks/useTerminal";
+import BackgroundNetwork from "@/components/BackgroundNetwork";
 
 const Index = () => {
   const navigateToSection = (section: string) => {
@@ -21,7 +22,8 @@ const Index = () => {
 
   return (
     <TerminalProvider>
-      <div className="min-h-screen">
+      <div className="min-h-screen relative">
+        <BackgroundNetwork />
         <Navigation />
         <main>
           <section id="hero">

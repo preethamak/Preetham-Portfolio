@@ -1,7 +1,7 @@
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { ExternalLink, Github, Globe, Database, Brain } from "lucide-react";
+import { Github, Globe, Database, Brain } from "lucide-react";
 
 const ProjectsSection = () => {
   const projects = [
@@ -113,10 +113,6 @@ const ProjectsSection = () => {
                     </div>
                   </div>
 
-                  {/* Links Coming Soon */}
-                  <div className="mt-4">
-                    <p className="text-sm text-muted-foreground italic">Project links coming soon...</p>
-                  </div>
                 </div>
 
                 {/* Features */}
