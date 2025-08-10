@@ -8,6 +8,7 @@ import Footer from "@/components/Footer";
 import Terminal from "@/components/Terminal";
 import { TerminalProvider } from "@/hooks/useTerminal";
 import BackgroundNetwork from "@/components/BackgroundNetwork";
+import CommentsSection from "@/components/CommentsSection";
 
 const Index = () => {
   const navigateToSection = (section: string) => {
@@ -42,6 +43,7 @@ const Index = () => {
             <ContactSection />
           </section>
         </main>
+        <CommentsSection />
         <Footer />
         <Terminal onNavigate={navigateToSection} />
       </div>

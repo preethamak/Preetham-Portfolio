@@ -1,6 +1,8 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { X, Minus, Square, Terminal as TerminalIcon } from 'lucide-react';
+import { X, Minus, Terminal as TerminalIcon } from 'lucide-react';
 import { cn } from '@/lib/utils';
+import CommentDialog from '@/components/CommentDialog';
+import { useComments } from '@/hooks/useComments';
 
 interface Command {
   input: string;
@@ -19,93 +21,112 @@ const Terminal: React.FC<TerminalProps> = ({ onNavigate }) => {
   const [history, setHistory] = useState<Command[]>([]);
   const [historyIndex, setHistoryIndex] = useState(-1);
   const [suggestions, setSuggestions] = useState<string[]>([]);
-  const [theme, setTheme] = useState<'matrix' | 'cyber' | 'classic'>('matrix');
+  const [theme, setTheme] = useState<'matrix' | 'cyber' | 'classic' | 'hacker' | 'neon'>('matrix');
   const inputRef = useRef<HTMLInputElement>(null);
   const terminalRef = useRef<HTMLDivElement>(null);
+
+  const { getComments, deleteComment, clearComments } = useComments();
+  const [showCommentDialog, setShowCommentDialog] = useState(false);
+  const guessSecret = useRef<number | null>(null);
 
   const commands = {
     '/help': () => [
       'Available commands:',
-      '/about      - Navigate to about section',
-      '/skills     - Navigate to skills section', 
-      '/projects   - Navigate to projects section',
-      '/contact    - Navigate to contact section',
-      '/experience - Navigate to experience section',
-      '/education  - Navigate to education section',
-      '/clear      - Clear terminal',
-      '/theme      - Switch terminal theme',
-      '/matrix     - Enable matrix rain effect',
-      '/whoami     - Display user info',
-      '/pwd        - Show current section',
-      '/ls         - List available sections'
+      '/about           - Navigate to about section',
+      '/skills          - Navigate to skills section', 
+      '/projects        - Navigate to projects section',
+      '/contact         - Navigate to contact section',
+      '/clear           - Clear terminal',
+      '/themes          - Show available website themes',
+      '/theme <name>    - Switch website theme',
+      '/mode <name>     - Switch terminal mode',
+      '/matrix          - Matrix rain effect',
+      '/social          - Show social links commands',
+      '/github          - Open GitHub profile',
+      '/linkedin        - Open LinkedIn profile',
+      '/email           - Open Gmail compose',
+      '/comment         - Add a new comment',
+      '/comments        - View comments gallery (if any)',
+      '/deletecomment <id> - Delete comment by id',
+      '/clearcomments   - Remove all comments',
+      '/ascii           - Show AK ASCII art',
+      '/guess [n]       - Start/guess number game',
     ],
-    '/about': () => {
-      onNavigate('about');
-      return ['Navigating to About section...'];
-    },
-    '/skills': () => {
-      onNavigate('skills');
-      return ['Navigating to Skills section...'];
-    },
-    '/projects': () => {
-      onNavigate('projects');
-      return ['Navigating to Projects section...'];
-    },
-    '/contact': () => {
-      onNavigate('contact');
-      return ['Navigating to Contact section...'];
-    },
-    '/experience': () => {
-      onNavigate('about');
-      return ['Navigating to Experience section...'];
-    },
-    '/education': () => {
-      onNavigate('about');
-      return ['Navigating to Education section...'];
-    },
-    '/clear': () => {
-      setHistory([]);
-      return [];
-    },
+    '/about': () => { onNavigate('about'); return ['Navigating to About section...']; },
+    '/skills': () => { onNavigate('skills'); return ['Navigating to Skills section...']; },
+    '/projects': () => { onNavigate('projects'); return ['Navigating to Projects section...']; },
+    '/contact': () => { onNavigate('contact'); return ['Navigating to Contact section...']; },
+    '/clear': () => { setHistory([]); return []; },
+    '/themes': () => [
+      'Available website themes:',
+      ' - dark (default hacker dark)',
+      ' - light (premium light)',
+      ' - hacker (green/black hacker vibe)',
+      ' - neon (purple/blue neon)'
+    ],
     '/theme': (args?: string) => {
       const newTheme = args?.toLowerCase();
-      const validThemes = ['dark', 'light'];
-      
+      const validThemes = ['dark', 'light', 'hacker', 'neon'];
       if (!newTheme) {
-        const current = document.documentElement.classList.contains('light') ? 'light' : 'dark';
-        return [`Current website theme: ${current}`, 'Usage: /theme [dark|light]'];
+        const current = ['light','hacker','neon'].find(c => document.documentElement.classList.contains(c)) || 'dark';
+        return [`Current website theme: ${current}`, 'Usage: /theme [dark|light|hacker|neon]'];
       }
-      
       if (validThemes.includes(newTheme)) {
         const root = document.documentElement;
-        root.classList.remove('light', 'dark');
+        root.classList.remove('light', 'dark', 'hacker', 'neon');
         root.classList.add(newTheme);
         return [`Website theme changed to: ${newTheme}`];
       }
-      
-      return [`Invalid theme: ${newTheme}`, 'Available themes: dark, light'];
+      return [`Invalid theme: ${newTheme}`, 'Available themes: dark, light, hacker, neon'];
     },
     '/mode': (args?: string) => {
-      const newMode = args?.toLowerCase();
-      const themes: Array<'matrix' | 'cyber' | 'classic'> = ['matrix', 'cyber', 'classic'];
-      
+      const newMode = (args || '').toLowerCase();
+      const modes: Array<'matrix' | 'cyber' | 'classic' | 'hacker' | 'neon'> = ['matrix', 'cyber', 'classic', 'hacker', 'neon'];
       if (!newMode) {
-        return [`Current terminal mode: ${theme}`, 'Usage: /mode [matrix|cyber|classic]'];
+        return [`Current terminal mode: ${theme}`, 'Usage: /mode [matrix|cyber|classic|hacker|neon]'];
       }
-      
-      if (themes.includes(newMode as any)) {
+      if (modes.includes(newMode as any)) {
         setTheme(newMode as any);
         return [`Terminal mode switched to: ${newMode}`];
       }
-      
-      return [`Invalid mode: ${newMode}`, 'Available modes: matrix, cyber, classic'];
+      return [`Invalid mode: ${newMode}`, 'Available modes: matrix, cyber, classic, hacker, neon'];
     },
     '/matrix': () => {
-      // Trigger matrix effect
       document.body.classList.add('matrix-effect');
       setTimeout(() => document.body.classList.remove('matrix-effect'), 3000);
       return ['Matrix rain effect activated...', 'Wake up, Neo...'];
     },
+    '/social': () => [
+      'Social links (use commands to open):',
+      ' - /email    → Gmail compose',
+      ' - /github   → GitHub profile',
+      ' - /linkedin → LinkedIn profile'
+    ],
+    '/github': () => { window.open('https://github.com/preethamak', '_blank'); return ['Opening GitHub...']; },
+    '/linkedin': () => { window.open('https://www.linkedin.com/in/preetham-a-k-18b97931b/', '_blank'); return ['Opening LinkedIn...']; },
+    '/email': () => { window.open('https://mail.google.com/mail/?view=cm&fs=1&to=preethamak07@gmail.com', '_blank'); return ['Opening Gmail compose...']; },
+    '/comment': () => { setShowCommentDialog(true); return ['Opening comment form...']; },
+    '/comments': () => {
+      const count = getComments().length;
+      if (count > 0) { onNavigate('comments'); return [`Opening comments gallery... (${count} comment${count>1?'s':''})`]; }
+      return ['No comments yet. Use /comment to add one.'];
+    },
+    '/deletecomment': (args?: string) => {
+      const id = (args || '').trim();
+      if (!id) return ['Usage: /deletecomment <id>'];
+      deleteComment(id);
+      return [`Deleted comment ${id}`];
+    },
+    '/clearcomments': () => { clearComments(); return ['All comments cleared.']; },
+    '/ascii': () => [
+      '    █████╗ ██╗  ██╗',
+      '   ██╔══██╗██║ ██╔╝',
+      '   ███████║█████╔╝ ',
+      '   ██╔══██║██╔═██╗ ',
+      '   ██║  ██║██║  ██╗',
+      '   ╚═╝  ╚═╝╚═╝  ╚═╝',
+      '          AK'
+    ],
     '/whoami': () => [
       'User: Preetham AK',
       'Role: Blockchain Developer & AI Engineer',
@@ -113,18 +134,20 @@ const Terminal: React.FC<TerminalProps> = ({ onNavigate }) => {
       'Education: B.Tech in AI & ML at REVA University',
       'Passion: Blockchain & Decentralized Systems'
     ],
-    '/pwd': () => {
-      const currentSection = window.location.hash || '/home';
-      return [`Current section: ${currentSection}`];
+    '/pwd': () => { const currentSection = window.location.hash || '/home'; return [`Current section: ${currentSection}`]; },
+    '/ls': () => [ 'Available sections:', 'hero/', 'about/', 'skills/', 'projects/', 'contact/' ],
+    '/guess': (args?: string) => {
+      const val = (args || '').trim();
+      if (!val) {
+        guessSecret.current = Math.floor(Math.random() * 100) + 1;
+        return ['Guess game started! I\'m thinking of a number between 1 and 100.', 'Use /guess <n> to guess.'];
+      }
+      const n = Number(val);
+      if (!guessSecret.current) return ['Start a game first: /guess'];
+      if (Number.isNaN(n) || n < 1 || n > 100) return ['Please provide a number between 1 and 100.'];
+      if (n === guessSecret.current) { guessSecret.current = null; return ['Correct! 🎉 Game over.']; }
+      return [n < (guessSecret.current as number) ? 'Higher ⬆️' : 'Lower ⬇️'];
     },
-    '/ls': () => [
-      'Available sections:',
-      'hero/',
-      'about/',
-      'skills/',
-      'projects/',
-      'contact/'
-    ]
   };
 
   const allCommands = Object.keys(commands);
@@ -218,17 +241,19 @@ const Terminal: React.FC<TerminalProps> = ({ onNavigate }) => {
   const themeClasses = {
     matrix: 'bg-black text-green-400 border-green-500',
     cyber: 'bg-slate-900 text-cyan-400 border-cyan-500', 
-    classic: 'bg-amber-900 text-amber-300 border-amber-500'
+    classic: 'bg-amber-900 text-amber-300 border-amber-500',
+    hacker: 'bg-black text-emerald-400 border-emerald-500',
+    neon: 'bg-zinc-900 text-fuchsia-400 border-fuchsia-500'
   };
 
   if (!isOpen) {
     return (
       <button
         onClick={() => setIsOpen(true)}
-        className="fixed bottom-4 right-4 z-50 bg-black text-green-400 p-3 rounded-full border border-green-500 hover:bg-green-500 hover:text-black transition-all duration-300 shadow-lg hover:shadow-green-500/50"
+        className="fixed bottom-4 right-4 z-50 bg-black text-green-400 p-4 rounded-full border border-green-500 hover:bg-green-500 hover:text-black transition-all duration-300 shadow-xl hover:shadow-green-500/50 focus:outline-none focus:ring-2 focus:ring-green-400/70"
         title="Open Terminal"
       >
-        <TerminalIcon className="w-6 h-6" />
+        <TerminalIcon className="w-8 h-8" />
       </button>
     );
   }
@@ -304,14 +329,13 @@ const Terminal: React.FC<TerminalProps> = ({ onNavigate }) => {
           </div>
 
           {/* Input Area */}
-          <div className="border-t border-current p-2">
-            {/* Suggestions */}
+          <div className="relative border-t border-current p-2">
+            {/* Suggestions (overlay, does not shift input) */}
             {suggestions.length > 0 && currentInput && (
-              <div className="text-xs opacity-60 mb-1">
+              <div className="absolute -top-5 left-2 right-2 text-xs opacity-60 pointer-events-none">
                 Suggestions: {suggestions.slice(0, 3).join(', ')}
               </div>
             )}
-            
             {/* Input */}
             <div className="flex items-center gap-1">
               <span className="text-green-300">$</span>
@@ -329,6 +353,9 @@ const Terminal: React.FC<TerminalProps> = ({ onNavigate }) => {
           </div>
         </>
       )}
+      <CommentDialog open={showCommentDialog} onOpenChange={setShowCommentDialog} onSubmitted={(id)=>{
+          setHistory(prev=>[...prev,{input:'/comment',output:[`Comment saved with id: ${id}`],timestamp:new Date()}]);
+        }} />
     </div>
   );
 };
