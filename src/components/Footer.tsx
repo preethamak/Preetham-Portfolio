@@ -87,7 +87,7 @@ const Footer = () => {
         </div>
 
         <div className="text-center text-muted-foreground text-sm mt-8">
-          © 2024 Preetham AK. All rights reserved.
+          © 2025 Preetham AK. All rights reserved.
         </div>
       </div>
     </footer>

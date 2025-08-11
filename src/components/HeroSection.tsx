@@ -66,7 +66,7 @@ const HeroSection = () => {
           <Card className="p-8 bg-gradient-secondary border-primary/20 glow-secondary animate-float">
             <div className="space-y-6 text-center">
               <div className="w-32 h-32 mx-auto bg-gradient-primary rounded-full flex items-center justify-center text-4xl font-bold text-primary-foreground">
-                PA
+                AK
               </div>
               
               <div className="space-y-2">

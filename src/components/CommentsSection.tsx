@@ -91,11 +91,6 @@ const CommentsSection: React.FC = () => {
           </CardContent>
         </Card>
 
-        {/* Empty state */}
-        {!comments.length && (
-          <p className="text-muted-foreground">No comments yet. Be the first to add one.</p>
-        )}
-
         {/* Gallery */}
         {comments.length > 0 && (
           <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">

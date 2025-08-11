@@ -55,19 +55,21 @@ const Terminal: React.FC<TerminalProps> = ({ onNavigate }) => {
       '/projects        - Navigate to projects section',
       '/contact         - Navigate to contact section',
       '/clear           - Clear terminal',
-      '/theme [name]    - Switch website theme (no arg cycles)',
-      '/mode [name]     - Switch terminal mode (no arg cycles)',
+      '/theme [1-4]     - Switch website theme (no arg cycles)',
+      '/mode [1-5]      - Switch terminal mode (no arg cycles)',
       '/matrix          - Matrix rain effect',
       '/social          - Show social links',
+      '/github          - Open GitHub profile',
+      '/linkedin        - Open LinkedIn profile',
+      '/gmail           - Open Gmail compose',
       '/whoami          - About me',
       '/pwd             - Current section',
       '/ls or /sl       - List sections',
       '/comment         - Jump to add comment',
       '/comments        - Open comments gallery',
       '/version         - Show site version',
-      '/admin <pass>    - Enter admin mode',
-      '/control         - Show developer controls',
-      '/snake           - Play snake (coming soon)'
+      '/uptime          - Show session uptime',
+      '/admin <pass>    - Enter admin mode'
     ],
     '/about': () => { onNavigate('about'); return ['Navigating to About section...']; },
     '/skills': () => { onNavigate('skills'); return ['Navigating to Skills section...']; },
@@ -83,15 +85,34 @@ const Terminal: React.FC<TerminalProps> = ({ onNavigate }) => {
     '/logout': () => { setIsAdmin(false); return ['Admin session ended.']; },
     '/control': () => isAdmin ? [
       'Developer controls:',
-      '- /deletecomment <id>',
-      '- /clearcomments',
-      '- /setversion <v>',
-      '- /setdefaulttheme <name>',
-      '- /theme [name] to preview',
+      '- /deletecomment <id>  - Delete specific comment',
+      '- /clearcomments       - Clear all comments',
+      '- /setversion <v>      - Set site version',
+      '- /setdefaulttheme <n> - Set default theme (1-4)',
+      '- /theme [1-4]         - Preview themes',
+      '- /mode [1-5]          - Preview terminal modes'
     ] : ['Admin required. Use /admin <password>.'],
     '/version': () => [`Version: ${localStorage.getItem('site-version') || '1.0.0'}`],
     '/setversion': (args?: string) => { if (!isAdmin) return ['Admin required.']; const v=(args||'').trim(); if(!v) return ['Usage: /setversion <x.y.z>']; localStorage.setItem('site-version', v); return [`Version set to ${v}`]; },
-    '/setdefaulttheme': (args?: string) => { if (!isAdmin) return ['Admin required.']; const t=(args||'').trim().toLowerCase(); const valid=['dark','light','hacker','cosmic']; if(!valid.includes(t)) return ['Usage: /setdefaulttheme [dark|light|hacker|cosmic]']; localStorage.setItem('default-theme', t); return [`Default theme saved: ${t}`]; },
+    '/setdefaulttheme': (args?: string) => { 
+      if (!isAdmin) return ['Admin required.']; 
+      const input = (args||'').trim();
+      const themeMap = { '1': 'dark', '2': 'light', '3': 'hacker', '4': 'cosmic' };
+      const t = themeMap[input as keyof typeof themeMap] || input.toLowerCase(); 
+      const valid=['dark','light','hacker','cosmic']; 
+      if(!valid.includes(t)) return ['Usage: /setdefaulttheme [1-4] or [dark|light|hacker|cosmic]']; 
+      localStorage.setItem('default-theme', t); 
+      return [`Default theme saved: ${t}`]; 
+    },
+    '/uptime': () => {
+      const start = sessionStorage.getItem('session-start') || Date.now().toString();
+      if (!sessionStorage.getItem('session-start')) sessionStorage.setItem('session-start', start);
+      const uptime = Math.floor((Date.now() - parseInt(start)) / 1000);
+      const hours = Math.floor(uptime / 3600);
+      const minutes = Math.floor((uptime % 3600) / 60);
+      const seconds = uptime % 60;
+      return [`Session uptime: ${hours}h ${minutes}m ${seconds}s`];
+    },
     '/theme': (args?: string) => {
       const validThemes = ['dark', 'light', 'hacker', 'cosmic'];
       const root = document.documentElement;
@@ -102,28 +123,32 @@ const Terminal: React.FC<TerminalProps> = ({ onNavigate }) => {
         root.classList.add(next);
         return [`Website theme changed to: ${next}`];
       }
-      const newTheme = args.toLowerCase();
+      // Handle numeric input
+      const themeMap = { '1': 'dark', '2': 'light', '3': 'hacker', '4': 'cosmic' };
+      const newTheme = themeMap[args as keyof typeof themeMap] || args.toLowerCase();
       if (validThemes.includes(newTheme)) {
         root.classList.remove('dark','light','hacker','cosmic');
         root.classList.add(newTheme);
         return [`Website theme changed to: ${newTheme}`];
       }
-      return [`Invalid theme: ${newTheme}`, 'Available themes: dark, light, hacker, cosmic'];
+      return [`Invalid theme: ${args}`, 'Available themes: 1(dark), 2(light), 3(hacker), 4(cosmic)'];
     },
     '/mode': (args?: string) => {
-      const list: Array<'matrix' | 'cyber' | 'classic' | 'hacker' | 'neon'> = ['matrix','hacker','cyber','classic','neon'];
+      const list: Array<'matrix' | 'cyber' | 'classic' | 'hacker' | 'neon'> = ['matrix','cyber','classic','hacker','neon'];
       if (!args) {
         const idx = list.indexOf(theme as any);
         const next = list[(idx + 1) % list.length];
         setTheme(next as any);
         return [`Terminal mode switched to: ${next}`];
       }
-      const newMode = args.toLowerCase();
+      // Handle numeric input
+      const modeMap = { '1': 'matrix', '2': 'cyber', '3': 'classic', '4': 'hacker', '5': 'neon' };
+      const newMode = modeMap[args as keyof typeof modeMap] || args.toLowerCase();
       if (list.includes(newMode as any)) {
         setTheme(newMode as any);
         return [`Terminal mode switched to: ${newMode}`];
       }
-      return [`Invalid mode: ${newMode}`, 'Available modes: matrix, hacker, cyber, classic, neon'];
+      return [`Invalid mode: ${args}`, 'Available modes: 1(matrix), 2(cyber), 3(classic), 4(hacker), 5(neon)'];
     },
     '/matrix': () => {
       document.body.classList.add('matrix-effect');
@@ -136,9 +161,9 @@ const Terminal: React.FC<TerminalProps> = ({ onNavigate }) => {
       ' - GitHub: https://github.com/preethamak',
       ' - LinkedIn: https://www.linkedin.com/in/preetham-a-k-18b97931b/'
     ],
-    // '/github' removed
-    // '/linkedin' removed
-    // '/email' removed
+    '/github': () => { window.open('https://github.com/preethamak', '_blank'); return ['Opening GitHub profile...']; },
+    '/linkedin': () => { window.open('https://www.linkedin.com/in/preetham-a-k-18b97931b/', '_blank'); return ['Opening LinkedIn profile...']; },
+    '/gmail': () => { window.open('https://mail.google.com/mail/?view=cm&fs=1&to=preethamak07@gmail.com', '_blank'); return ['Opening Gmail compose...']; },
     '/comment': () => { onNavigate('comments'); window.dispatchEvent(new CustomEvent('focus-comment-form')); return ['Opening comment form...']; },
     '/comments': () => {
       const count = getComments().length;
@@ -154,17 +179,23 @@ const Terminal: React.FC<TerminalProps> = ({ onNavigate }) => {
     },
     '/clearcomments': () => { if (!isAdmin) return ['Admin required. Use /admin to login.']; clearComments(); return ['All comments cleared.']; },
     '/whoami': () => [
-      'Preetham AK',
-      'Role: Smart Contract Developer & Auditor, AI Engineer',
-      'Location: Bangalore, India',
-      'Education: B.Tech in AI & ML, REVA University (2024-2028)',
-      'About: Building decentralized systems with secure smart contracts and AI insights.',
-      'Resume: Use the Resume button on the hero card to download.'
+      '╔═══════════════════════════════════════╗',
+      '║            PREETHAM AK                ║',
+      '╠═══════════════════════════════════════╣',
+      '║ Role: Smart Contract Developer &      ║',
+      '║       Auditor, AI Engineer            ║',
+      '║ Location: Bangalore, India            ║',
+      '║ Education: B.Tech AI & ML (2024-28)  ║',
+      '║ University: REVA University           ║',
+      '║ CGPA: 9.2/10                         ║',
+      '║ Available for: Smart contract dev,   ║',
+      '║                auditing & AI projects ║',
+      '╚═══════════════════════════════════════╝',
+      'Building decentralized systems with secure smart contracts and AI insights.'
     ],
     '/pwd': () => { const currentSection = window.location.hash || '/home'; return [`Current section: ${currentSection}`]; },
-    '/ls': () => [ 'Available sections:', 'hero/', 'about/', 'skills/', 'projects/', 'contact/' ],
+    '/ls': () => [ 'Available sections:', 'hero/', 'about/', 'skills/', 'projects/', 'contact/', 'comments/' ],
     '/sl': () => commands['/ls'](),
-    '/snake': () => [ 'Snake game: coming soon.' ],
   };
 
   const allCommands = Object.keys(commands);
@@ -366,15 +397,17 @@ const Terminal: React.FC<TerminalProps> = ({ onNavigate }) => {
           </div>
 
           {/* Input Area */}
-          <div className="relative border-t border-current p-2">
-            {/* Suggestions row (non-overlapping) */}
-            {suggestions.length > 0 && currentInput && (
-              <div className="text-xs opacity-60 mb-1">
-                Suggestions: {suggestions.slice(0, 3).join(', ')}
-              </div>
-            )}
+          <div className="border-t border-current">
+            {/* Suggestions row (fixed height to prevent jumping) */}
+            <div className="px-2 pt-2 h-5">
+              {suggestions.length > 0 && currentInput && (
+                <div className="text-xs opacity-60">
+                  Suggestions: {suggestions.slice(0, 3).join(', ')}
+                </div>
+              )}
+            </div>
             {/* Input */}
-            <div className="flex items-center gap-1">
+            <div className="flex items-center gap-1 px-2 pb-2">
               <span className="text-green-300">$</span>
               <input
                 ref={inputRef}

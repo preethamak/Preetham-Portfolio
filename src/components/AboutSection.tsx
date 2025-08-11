@@ -29,7 +29,7 @@ const AboutSection = () => {
 
   const internships = [
     {
-      company: "Equator",
+      company: "Equadator",
       role: "Web Developer & AI Engineer Intern",
       description: "Developing web applications and AI solutions for modern business challenges"
     },
