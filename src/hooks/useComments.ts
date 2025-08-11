@@ -29,7 +29,11 @@ export const useComments = () => {
 
   const addComment = useCallback((data: Omit<SiteComment, 'id' | 'timestamp'>) => {
     const comments = read();
-    const id = `${Date.now().toString(36)}-${Math.random().toString(36).slice(2,6)}`;
+    const maxId = comments.reduce((max, c) => {
+      const n = Number(c.id);
+      return Number.isFinite(n) ? Math.max(max, n) : max;
+    }, 0);
+    const id = String(maxId + 1);
     const comment: SiteComment = { id, timestamp: Date.now(), ...data };
     write([comment, ...comments]);
     return id;
@@ -40,9 +44,16 @@ export const useComments = () => {
     write(comments);
   }, []);
 
+  const updateComment = useCallback((id: string, data: Partial<Omit<SiteComment, 'id' | 'timestamp'>>) => {
+    const comments = read().map(c => c.id === id ? { ...c, ...data } : c);
+    write(comments);
+  }, []);
+
   const clearComments = useCallback(() => {
     write([]);
   }, []);
 
-  return { getComments, addComment, deleteComment, clearComments };
+  const exportComments = useCallback(() => JSON.stringify(read(), null, 2), []);
+
+  return { getComments, addComment, deleteComment, updateComment, clearComments, exportComments };
 };

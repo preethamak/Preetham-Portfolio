@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { X, Minus, Terminal as TerminalIcon } from 'lucide-react';
 import { cn } from '@/lib/utils';
-import CommentDialog from '@/components/CommentDialog';
+
 import { useComments } from '@/hooks/useComments';
 
 interface Command {
@@ -22,12 +22,30 @@ const Terminal: React.FC<TerminalProps> = ({ onNavigate }) => {
   const [historyIndex, setHistoryIndex] = useState(-1);
   const [suggestions, setSuggestions] = useState<string[]>([]);
   const [theme, setTheme] = useState<'matrix' | 'cyber' | 'classic' | 'hacker' | 'neon'>('matrix');
+  const [isAdmin, setIsAdmin] = useState<boolean>(() => localStorage.getItem('admin-auth') === '1');
+  const [position, setPosition] = useState<{ x: number; y: number } | null>(null);
+  const dragData = useRef<{ offsetX: number; offsetY: number } | null>(null);
+
   const inputRef = useRef<HTMLInputElement>(null);
   const terminalRef = useRef<HTMLDivElement>(null);
+  const containerRef = useRef<HTMLDivElement>(null);
 
   const { getComments, deleteComment, clearComments } = useComments();
-  const [showCommentDialog, setShowCommentDialog] = useState(false);
-  const guessSecret = useRef<number | null>(null);
+
+  // Apply default site theme on mount if set
+  useEffect(() => {
+    const def = localStorage.getItem('default-theme');
+    if (def) {
+      const root = document.documentElement;
+      root.classList.remove('light', 'dark', 'hacker', 'neon', 'cosmic');
+      root.classList.add(def);
+    }
+  }, []);
+
+  // Persist admin session
+  useEffect(() => {
+    localStorage.setItem('admin-auth', isAdmin ? '1' : '0');
+  }, [isAdmin]);
 
   const commands = {
     '/help': () => [
