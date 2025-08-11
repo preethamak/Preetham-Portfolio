@@ -55,59 +55,75 @@ const Terminal: React.FC<TerminalProps> = ({ onNavigate }) => {
       '/projects        - Navigate to projects section',
       '/contact         - Navigate to contact section',
       '/clear           - Clear terminal',
-      '/themes          - Show available website themes',
-      '/theme <name>    - Switch website theme',
-      '/mode <name>     - Switch terminal mode',
+      '/theme [name]    - Switch website theme (no arg cycles)',
+      '/mode [name]     - Switch terminal mode (no arg cycles)',
       '/matrix          - Matrix rain effect',
-      '/social          - Show social links commands',
-      '/github          - Open GitHub profile',
-      '/linkedin        - Open LinkedIn profile',
-      '/email           - Open Gmail compose',
-      '/comment         - Add a new comment',
-      '/comments        - View comments gallery (if any)',
-      '/deletecomment <id> - Delete comment by id',
-      '/clearcomments   - Remove all comments',
-      '/ascii           - Show AK ASCII art',
-      '/guess [n]       - Start/guess number game',
+      '/social          - Show social links',
+      '/whoami          - About me',
+      '/pwd             - Current section',
+      '/ls or /sl       - List sections',
+      '/comment         - Jump to add comment',
+      '/comments        - Open comments gallery',
+      '/version         - Show site version',
+      '/admin <pass>    - Enter admin mode',
+      '/control         - Show developer controls',
+      '/snake           - Play snake (coming soon)'
     ],
     '/about': () => { onNavigate('about'); return ['Navigating to About section...']; },
     '/skills': () => { onNavigate('skills'); return ['Navigating to Skills section...']; },
     '/projects': () => { onNavigate('projects'); return ['Navigating to Projects section...']; },
     '/contact': () => { onNavigate('contact'); return ['Navigating to Contact section...']; },
     '/clear': () => { setHistory([]); return []; },
-    '/themes': () => [
-      'Available website themes:',
-      ' - dark (default hacker dark)',
-      ' - light (premium light)',
-      ' - hacker (green/black hacker vibe)',
-      ' - neon (purple/blue neon)'
-    ],
+    '/admin': (args?: string) => {
+      const pass = (args || '').trim();
+      if (isAdmin) return ['Already in admin mode.'];
+      if (pass === '2004') { setIsAdmin(true); return ['Admin access granted.']; }
+      return ['Invalid password.'];
+    },
+    '/logout': () => { setIsAdmin(false); return ['Admin session ended.']; },
+    '/control': () => isAdmin ? [
+      'Developer controls:',
+      '- /deletecomment <id>',
+      '- /clearcomments',
+      '- /setversion <v>',
+      '- /setdefaulttheme <name>',
+      '- /theme [name] to preview',
+    ] : ['Admin required. Use /admin <password>.'],
+    '/version': () => [`Version: ${localStorage.getItem('site-version') || '1.0.0'}`],
+    '/setversion': (args?: string) => { if (!isAdmin) return ['Admin required.']; const v=(args||'').trim(); if(!v) return ['Usage: /setversion <x.y.z>']; localStorage.setItem('site-version', v); return [`Version set to ${v}`]; },
+    '/setdefaulttheme': (args?: string) => { if (!isAdmin) return ['Admin required.']; const t=(args||'').trim().toLowerCase(); const valid=['dark','light','hacker','cosmic']; if(!valid.includes(t)) return ['Usage: /setdefaulttheme [dark|light|hacker|cosmic]']; localStorage.setItem('default-theme', t); return [`Default theme saved: ${t}`]; },
     '/theme': (args?: string) => {
-      const newTheme = args?.toLowerCase();
-      const validThemes = ['dark', 'light', 'hacker', 'neon'];
-      if (!newTheme) {
-        const current = ['light','hacker','neon'].find(c => document.documentElement.classList.contains(c)) || 'dark';
-        return [`Current website theme: ${current}`, 'Usage: /theme [dark|light|hacker|neon]'];
+      const validThemes = ['dark', 'light', 'hacker', 'cosmic'];
+      const root = document.documentElement;
+      if (!args) {
+        const current = validThemes.find(c => root.classList.contains(c)) || 'dark';
+        const next = validThemes[(validThemes.indexOf(current) + 1) % validThemes.length];
+        root.classList.remove('dark','light','hacker','cosmic');
+        root.classList.add(next);
+        return [`Website theme changed to: ${next}`];
       }
+      const newTheme = args.toLowerCase();
       if (validThemes.includes(newTheme)) {
-        const root = document.documentElement;
-        root.classList.remove('light', 'dark', 'hacker', 'neon');
+        root.classList.remove('dark','light','hacker','cosmic');
         root.classList.add(newTheme);
         return [`Website theme changed to: ${newTheme}`];
       }
-      return [`Invalid theme: ${newTheme}`, 'Available themes: dark, light, hacker, neon'];
+      return [`Invalid theme: ${newTheme}`, 'Available themes: dark, light, hacker, cosmic'];
     },
     '/mode': (args?: string) => {
-      const newMode = (args || '').toLowerCase();
-      const modes: Array<'matrix' | 'cyber' | 'classic' | 'hacker' | 'neon'> = ['matrix', 'cyber', 'classic', 'hacker', 'neon'];
-      if (!newMode) {
-        return [`Current terminal mode: ${theme}`, 'Usage: /mode [matrix|cyber|classic|hacker|neon]'];
+      const list: Array<'matrix' | 'cyber' | 'classic' | 'hacker' | 'neon'> = ['matrix','hacker','cyber','classic','neon'];
+      if (!args) {
+        const idx = list.indexOf(theme as any);
+        const next = list[(idx + 1) % list.length];
+        setTheme(next as any);
+        return [`Terminal mode switched to: ${next}`];
       }
-      if (modes.includes(newMode as any)) {
+      const newMode = args.toLowerCase();
+      if (list.includes(newMode as any)) {
         setTheme(newMode as any);
         return [`Terminal mode switched to: ${newMode}`];
       }
-      return [`Invalid mode: ${newMode}`, 'Available modes: matrix, cyber, classic, hacker, neon'];
+      return [`Invalid mode: ${newMode}`, 'Available modes: matrix, hacker, cyber, classic, neon'];
     },
     '/matrix': () => {
       document.body.classList.add('matrix-effect');
@@ -115,57 +131,40 @@ const Terminal: React.FC<TerminalProps> = ({ onNavigate }) => {
       return ['Matrix rain effect activated...', 'Wake up, Neo...'];
     },
     '/social': () => [
-      'Social links (use commands to open):',
-      ' - /email    → Gmail compose',
-      ' - /github   → GitHub profile',
-      ' - /linkedin → LinkedIn profile'
+      'Social links:',
+      ' - Email: preethamak07@gmail.com',
+      ' - GitHub: https://github.com/preethamak',
+      ' - LinkedIn: https://www.linkedin.com/in/preetham-a-k-18b97931b/'
     ],
-    '/github': () => { window.open('https://github.com/preethamak', '_blank'); return ['Opening GitHub...']; },
-    '/linkedin': () => { window.open('https://www.linkedin.com/in/preetham-a-k-18b97931b/', '_blank'); return ['Opening LinkedIn...']; },
-    '/email': () => { window.open('https://mail.google.com/mail/?view=cm&fs=1&to=preethamak07@gmail.com', '_blank'); return ['Opening Gmail compose...']; },
-    '/comment': () => { setShowCommentDialog(true); return ['Opening comment form...']; },
+    // '/github' removed
+    // '/linkedin' removed
+    // '/email' removed
+    '/comment': () => { onNavigate('comments'); window.dispatchEvent(new CustomEvent('focus-comment-form')); return ['Opening comment form...']; },
     '/comments': () => {
       const count = getComments().length;
-      if (count > 0) { onNavigate('comments'); return [`Opening comments gallery... (${count} comment${count>1?'s':''})`]; }
-      return ['No comments yet. Use /comment to add one.'];
+      onNavigate('comments');
+      return [count > 0 ? `Opening comments gallery... (${count} comment${count>1?'s':''})` : 'No comments yet. Add one below.'];
     },
     '/deletecomment': (args?: string) => {
+      if (!isAdmin) return ['Admin required. Use /admin to login.'];
       const id = (args || '').trim();
       if (!id) return ['Usage: /deletecomment <id>'];
       deleteComment(id);
       return [`Deleted comment ${id}`];
     },
-    '/clearcomments': () => { clearComments(); return ['All comments cleared.']; },
-    '/ascii': () => [
-      '    █████╗ ██╗  ██╗',
-      '   ██╔══██╗██║ ██╔╝',
-      '   ███████║█████╔╝ ',
-      '   ██╔══██║██╔═██╗ ',
-      '   ██║  ██║██║  ██╗',
-      '   ╚═╝  ╚═╝╚═╝  ╚═╝',
-      '          AK'
-    ],
+    '/clearcomments': () => { if (!isAdmin) return ['Admin required. Use /admin to login.']; clearComments(); return ['All comments cleared.']; },
     '/whoami': () => [
-      'User: Preetham AK',
-      'Role: Blockchain Developer & AI Engineer',
+      'Preetham AK',
+      'Role: Smart Contract Developer & Auditor, AI Engineer',
       'Location: Bangalore, India',
-      'Education: B.Tech in AI & ML at REVA University',
-      'Passion: Blockchain & Decentralized Systems'
+      'Education: B.Tech in AI & ML, REVA University (2024-2028)',
+      'About: Building decentralized systems with secure smart contracts and AI insights.',
+      'Resume: Use the Resume button on the hero card to download.'
     ],
     '/pwd': () => { const currentSection = window.location.hash || '/home'; return [`Current section: ${currentSection}`]; },
     '/ls': () => [ 'Available sections:', 'hero/', 'about/', 'skills/', 'projects/', 'contact/' ],
-    '/guess': (args?: string) => {
-      const val = (args || '').trim();
-      if (!val) {
-        guessSecret.current = Math.floor(Math.random() * 100) + 1;
-        return ['Guess game started! I\'m thinking of a number between 1 and 100.', 'Use /guess <n> to guess.'];
-      }
-      const n = Number(val);
-      if (!guessSecret.current) return ['Start a game first: /guess'];
-      if (Number.isNaN(n) || n < 1 || n > 100) return ['Please provide a number between 1 and 100.'];
-      if (n === guessSecret.current) { guessSecret.current = null; return ['Correct! 🎉 Game over.']; }
-      return [n < (guessSecret.current as number) ? 'Higher ⬆️' : 'Lower ⬇️'];
-    },
+    '/sl': () => commands['/ls'](),
+    '/snake': () => [ 'Snake game: coming soon.' ],
   };
 
   const allCommands = Object.keys(commands);
@@ -256,8 +255,25 @@ const Terminal: React.FC<TerminalProps> = ({ onNavigate }) => {
     }
   };
 
+  const handleDragStart = (e: React.MouseEvent) => {
+    if (!containerRef.current) return;
+    const rect = containerRef.current.getBoundingClientRect();
+    dragData.current = { offsetX: e.clientX - rect.left, offsetY: e.clientY - rect.top };
+    const onMove = (ev: MouseEvent) => {
+      if (!dragData.current) return;
+      setPosition({ x: Math.max(0, ev.clientX - dragData.current.offsetX), y: Math.max(0, ev.clientY - dragData.current.offsetY) });
+    };
+    const onUp = () => {
+      dragData.current = null;
+      window.removeEventListener('mousemove', onMove);
+      window.removeEventListener('mouseup', onUp);
+    };
+    window.addEventListener('mousemove', onMove);
+    window.addEventListener('mouseup', onUp);
+  };
+
   const themeClasses = {
-    matrix: 'bg-black text-green-400 border-green-500',
+    matrix: 'bg-black text-emerald-400 border-emerald-500',
     cyber: 'bg-slate-900 text-cyan-400 border-cyan-500', 
     classic: 'bg-amber-900 text-amber-300 border-amber-500',
     hacker: 'bg-black text-emerald-400 border-emerald-500',
@@ -268,31 +284,34 @@ const Terminal: React.FC<TerminalProps> = ({ onNavigate }) => {
     return (
       <button
         onClick={() => setIsOpen(true)}
-        className="fixed bottom-4 right-4 z-50 bg-black text-green-400 p-4 rounded-full border border-green-500 hover:bg-green-500 hover:text-black transition-all duration-300 shadow-xl hover:shadow-green-500/50 focus:outline-none focus:ring-2 focus:ring-green-400/70"
+        className="fixed bottom-4 right-4 z-50 bg-black text-green-400 p-5 rounded-full border border-green-500 hover:bg-green-500 hover:text-black transition-all duration-300 shadow-xl hover:shadow-green-500/50 focus:outline-none focus:ring-2 focus:ring-green-400/70"
         title="Open Terminal"
       >
-        <TerminalIcon className="w-8 h-8" />
+        <TerminalIcon className="w-9 h-9" />
       </button>
     );
   }
 
   return (
     <div 
+      ref={containerRef}
       className={cn(
         "fixed z-50 transition-all duration-300 shadow-2xl",
         isMinimized 
-          ? "bottom-4 right-4 w-80 h-12" 
-          : "bottom-4 right-4 w-96 h-80",
+          ? "w-80 h-12" 
+          : "w-96 h-80",
+        !position ? "bottom-4 right-4" : "",
         themeClasses[theme]
       )}
       style={{ 
         borderRadius: '8px',
         border: '1px solid',
-        fontFamily: 'Monaco, Consolas, "Courier New", monospace'
+        fontFamily: 'Monaco, Consolas, "Courier New", monospace',
+        ...(position ? { top: position.y, left: position.x } : {})
       }}
     >
       {/* Terminal Header */}
-      <div className="flex items-center justify-between p-2 border-b border-current">
+      <div className="flex items-center justify-between p-2 border-b border-current cursor-move" onMouseDown={handleDragStart}>
         <div className="flex items-center gap-2">
           <TerminalIcon className="w-4 h-4" />
           <span className="text-sm font-medium">preetham@portfolio:~$</span>
@@ -348,9 +367,9 @@ const Terminal: React.FC<TerminalProps> = ({ onNavigate }) => {
 
           {/* Input Area */}
           <div className="relative border-t border-current p-2">
-            {/* Suggestions (overlay, does not shift input) */}
+            {/* Suggestions row (non-overlapping) */}
             {suggestions.length > 0 && currentInput && (
-              <div className="absolute -top-5 left-2 right-2 text-xs opacity-60 pointer-events-none">
+              <div className="text-xs opacity-60 mb-1">
                 Suggestions: {suggestions.slice(0, 3).join(', ')}
               </div>
             )}
@@ -371,9 +390,6 @@ const Terminal: React.FC<TerminalProps> = ({ onNavigate }) => {
           </div>
         </>
       )}
-      <CommentDialog open={showCommentDialog} onOpenChange={setShowCommentDialog} onSubmitted={(id)=>{
-          setHistory(prev=>[...prev,{input:'/comment',output:[`Comment saved with id: ${id}`],timestamp:new Date()}]);
-        }} />
     </div>
   );
 };
