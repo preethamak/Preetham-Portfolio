@@ -1,3 +1,4 @@
+import React, { useState } from "react";
 import Navigation from "@/components/Navigation";
 import EnhancedHeroSection from "@/components/EnhancedHeroSection";
 import AboutSection from "@/components/AboutSection";
@@ -11,8 +12,11 @@ import BackgroundNetwork from "@/components/BackgroundNetwork";
 import CommentsSection from "@/components/CommentsSection";
 import ParticleField from "@/components/ParticleField";
 import FloatingGeometry from "@/components/FloatingGeometry";
+import IntroAnimation from "@/components/IntroAnimation";
 
 const Index = () => {
+  const [showIntro, setShowIntro] = useState(true);
+
   const navigateToSection = (section: string) => {
     const element = document.getElementById(section);
     if (element) {
@@ -23,11 +27,17 @@ const Index = () => {
     }
   };
 
+  const handleIntroComplete = () => {
+    setShowIntro(false);
+  };
+
   return (
     <TerminalProvider>
-      <div className="min-h-screen relative overflow-hidden">
+      {showIntro && <IntroAnimation onComplete={handleIntroComplete} />}
+      
+      <div className={`min-h-screen relative overflow-hidden transition-opacity duration-1000 ${showIntro ? 'opacity-0' : 'opacity-100'}`}>
         {/* Immersive Background Layers */}
-        <ParticleField count={800} size={1.5} color="#00FFFF" />
+        <ParticleField count={400} size={1.2} color="#00FFFF" />
         <FloatingGeometry />
         <BackgroundNetwork />
         

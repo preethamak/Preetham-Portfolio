@@ -70,7 +70,9 @@ export default {
 			},
 			fontFamily: {
 				mono: ['JetBrains Mono', 'Fira Code', 'Monaco', 'Consolas', 'monospace'],
-				sans: ['Inter', 'system-ui', 'sans-serif']
+				sans: ['Inter', 'system-ui', 'sans-serif'],
+				display: ["var(--font-display)", 'serif'],
+				body: ["var(--font-body)", 'sans-serif'],
 			},
 			borderRadius: {
 				lg: 'var(--radius)',
