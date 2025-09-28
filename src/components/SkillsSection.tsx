@@ -1,6 +1,7 @@
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Code, Zap, Database, Shield } from "lucide-react";
+import SkillsRadar from "./SkillsRadar";
 
 const SkillsSection = () => {
   const skillCategories = [
@@ -13,7 +14,7 @@ const SkillsSection = () => {
     {
       title: "Programming Languages",
       icon: <Code className="w-6 h-6" />,
-      skills: ["Python", "C++", "JavaScript", "TypeScript"],
+      skills: ["Python", "C++", "Solidity", "Vyper"],
       description: "Full-stack development and system programming"
     },
     {
@@ -86,24 +87,35 @@ const SkillsSection = () => {
           ))}
         </div>
 
-        {/* Proficiency Highlight */}
+        {/* Interactive Skills Radar */}
         <Card className="mt-12 p-8 bg-gradient-secondary border-primary/20">
+          <div className="text-center mb-8">
+            <h3 className="text-2xl font-bold text-primary mb-4">Skills Proficiency Radar</h3>
+            <p className="text-lg text-muted-foreground">
+              Interactive visualization of technical expertise and experience levels
+            </p>
+          </div>
+          <SkillsRadar />
+        </Card>
+
+        {/* Core Proficiency Highlight */}
+        <Card className="mt-8 p-8 bg-gradient-secondary border-primary/20">
           <div className="text-center">
             <h3 className="text-2xl font-bold text-primary mb-4">Core Proficiency</h3>
             <p className="text-lg text-muted-foreground mb-6">
               Specialized in <span className="text-primary font-semibold">coding</span> with extensive experience in blockchain development and AI systems
             </p>
             <div className="flex flex-wrap justify-center gap-3">
-              <Badge className="bg-primary text-primary-foreground px-4 py-2 text-base">
+              <Badge className="bg-primary text-primary-foreground px-4 py-2 text-base hover:scale-105 transition-transform">
                 Smart Contracts
               </Badge>
-              <Badge className="bg-primary text-primary-foreground px-4 py-2 text-base">
+              <Badge className="bg-primary text-primary-foreground px-4 py-2 text-base hover:scale-105 transition-transform">
                 DeFi Protocols
               </Badge>
-              <Badge className="bg-primary text-primary-foreground px-4 py-2 text-base">
+              <Badge className="bg-primary text-primary-foreground px-4 py-2 text-base hover:scale-105 transition-transform">
                 Machine Learning
               </Badge>
-              <Badge className="bg-primary text-primary-foreground px-4 py-2 text-base">
+              <Badge className="bg-primary text-primary-foreground px-4 py-2 text-base hover:scale-105 transition-transform">
                 Full-Stack Development
               </Badge>
             </div>

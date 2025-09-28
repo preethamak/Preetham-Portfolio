@@ -57,7 +57,7 @@ const CommentsSection: React.FC = () => {
   return (
     <section id="comments" className="py-16">
       <div className="container mx-auto px-4">
-        <h2 className="text-3xl font-bold mb-6 text-gradient">Visitor Comments</h2>
+        <h2 className="text-3xl font-bold mb-6 text-gradient">Terminal Comments</h2>
 
         {/* Form */}
         <Card className="mb-8 backdrop-blur-sm">

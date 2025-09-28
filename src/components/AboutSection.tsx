@@ -29,9 +29,9 @@ const AboutSection = () => {
 
   const internships = [
     {
-      company: "Equadator",
-      role: "Web Developer & AI Engineer Intern",
-      description: "Developing web applications and AI solutions for modern business challenges"
+      company: "Xentrix Studios",
+      role: "Web Developer",
+      description: "Developing modern web applications and user interfaces for digital solutions"
     },
     {
       company: "Codeveda",
