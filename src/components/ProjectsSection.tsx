@@ -6,29 +6,32 @@ import { Github, Globe, Database, Brain } from "lucide-react";
 const ProjectsSection = () => {
   const projects = [
     {
-      title: "Blockchain Crowdfunding Platform",
-      description: "Developed a decentralized crowdfunding platform that enables people to host funding campaigns in a completely decentralized system. Built with smart contracts to ensure transparency and security.",
-      technologies: ["Solidity", "Thirdweb", "React", "Web3.js"],
-      icon: <Globe className="w-8 h-8" />,
-      category: "Blockchain",
+      title: "BlockDrive",
+      description: "A decentralized file storage app that combines smart contracts, IPFS via Pinata, and a modern React frontend. It lets you securely upload files to IPFS and store the access records on-chain, with built-in access control.",
+      technologies: ["Solidity", "IPFS", "Pinata", "React", "Web3.js"],
+      icon: <Database className="w-8 h-8" />,
+      category: "Decentralized Storage",
+      github: "https://github.com/preethamak/BlockDrive",
       features: [
-        "Smart contract-based fundraising",
-        "Decentralized governance",
-        "Transparent fund management",
-        "Automated milestone tracking"
+        "Files live on IPFS (not centralized servers)",
+        "Access controlled via blockchain",
+        "Future-proof and transparent",
+        "User-owned digital files"
       ]
     },
     {
-      title: "IPFS File Storage System",
-      description: "Created a decentralized file storage system using blockchain technology and IPFS. Provides secure, distributed storage with cryptographic verification and immutable file integrity.",
-      technologies: ["Solidity", "Web3.js", "IPFS", "Node.js"],
-      icon: <Database className="w-8 h-8" />,
-      category: "Decentralized Storage",
+      title: "CodeLab",
+      description: "An advanced web-based coding evaluation platform providing secure programming assessments, real-time monitoring, and AI-powered test case generation to make coding tests and learning more efficient.",
+      technologies: ["React", "TypeScript", "FastAPI", "Python", "Docker", "PostgreSQL"],
+      icon: <Globe className="w-8 h-8" />,
+      category: "EdTech Platform",
+      github: "https://github.com/preethamak/CodeLab1",
+      deployment: "https://code-lab123.vercel.app",
       features: [
-        "Distributed file storage",
-        "Cryptographic security",
-        "Immutable file hashes",
-        "Decentralized access control"
+        "Multi-language support (C, C++, Python, Java, SQL)",
+        "AI-based test case generation & evaluation",
+        "Secure containerized execution with Docker",
+        "Real-time monitoring and plagiarism detection"
       ]
     },
     {
@@ -37,11 +40,26 @@ const ProjectsSection = () => {
       technologies: ["Python", "PyTorch", "NumPy", "Machine Learning"],
       icon: <Brain className="w-8 h-8" />,
       category: "AI/ML",
+      github: "https://github.com/preethamak/micrograd",
       features: [
         "Custom automatic differentiation",
         "Character-level processing",
         "Neural network implementation",
         "Language generation capabilities"
+      ]
+    },
+    {
+      title: "nanoGPT",
+      description: "A from-scratch implementation of GPT, built while following Andrej Karpathy's tutorials and reading 'Attention Is All You Need'. Deeply understanding the inner workings of Transformers, Attention mechanisms, and how GPT models are trained.",
+      technologies: ["Python", "PyTorch", "Transformers", "NLP"],
+      icon: <Brain className="w-8 h-8" />,
+      category: "AI/ML",
+      github: "https://github.com/preethamak/GPT",
+      features: [
+        "Fully implemented Transformer architecture",
+        "Self-attention and cross-attention mechanics",
+        "Training on Shakespeare's text dataset",
+        "Text generation from trained model"
       ]
     }
   ];
@@ -129,6 +147,24 @@ const ProjectsSection = () => {
                       </li>
                     ))}
                   </ul>
+                  
+                  {/* Project Links */}
+                  <div className="flex flex-wrap gap-2 pt-4">
+                    <Button size="sm" variant="outline" className="border-primary text-primary hover:bg-primary hover:text-primary-foreground" asChild>
+                      <a href={project.github} target="_blank" rel="noopener noreferrer">
+                        <Github className="w-4 h-4 mr-2" />
+                        GitHub
+                      </a>
+                    </Button>
+                    {project.deployment && (
+                      <Button size="sm" variant="outline" className="border-secondary text-secondary-foreground hover:bg-secondary" asChild>
+                        <a href={project.deployment} target="_blank" rel="noopener noreferrer">
+                          <Globe className="w-4 h-4 mr-2" />
+                          Live Demo
+                        </a>
+                      </Button>
+                    )}
+                  </div>
                 </div>
               </div>
             </Card>

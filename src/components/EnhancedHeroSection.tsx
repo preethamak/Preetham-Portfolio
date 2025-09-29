@@ -104,7 +104,7 @@ const EnhancedHeroSection = () => {
                     className="w-full h-full object-cover"
                   />
                 </div>
-                <div className="absolute -inset-4 bg-gradient-primary rounded-full opacity-20 blur-lg group-hover:opacity-30 transition-opacity"></div>
+                <div className="absolute -inset-2 bg-gradient-primary rounded-full opacity-10 blur group-hover:opacity-15 transition-opacity"></div>
               </div>
               
               <div className="space-y-2">

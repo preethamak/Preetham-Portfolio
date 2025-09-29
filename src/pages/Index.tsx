@@ -36,9 +36,7 @@ const Index = () => {
       {showIntro && <IntroAnimation onComplete={handleIntroComplete} />}
       
       <div className={`min-h-screen relative overflow-hidden transition-opacity duration-1000 ${showIntro ? 'opacity-0' : 'opacity-100'}`}>
-        {/* Immersive Background Layers */}
-        <ParticleField count={400} size={1.2} color="#00FFFF" />
-        <FloatingGeometry />
+        {/* Magnetic Background Layers */}
         <BackgroundNetwork />
         
         {/* Parallax scroll indicator */}

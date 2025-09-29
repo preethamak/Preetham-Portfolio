@@ -1,7 +1,7 @@
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Code, Zap, Database, Shield } from "lucide-react";
-import SkillsRadar from "./SkillsRadar";
+
 
 const SkillsSection = () => {
   const skillCategories = [
@@ -87,16 +87,6 @@ const SkillsSection = () => {
           ))}
         </div>
 
-        {/* Interactive Skills Radar */}
-        <Card className="mt-12 p-8 bg-gradient-secondary border-primary/20">
-          <div className="text-center mb-8">
-            <h3 className="text-2xl font-bold text-primary mb-4">Skills Proficiency Radar</h3>
-            <p className="text-lg text-muted-foreground">
-              Interactive visualization of technical expertise and experience levels
-            </p>
-          </div>
-          <SkillsRadar />
-        </Card>
 
         {/* Core Proficiency Highlight */}
         <Card className="mt-8 p-8 bg-gradient-secondary border-primary/20">
@@ -110,14 +100,39 @@ const SkillsSection = () => {
                 Smart Contracts
               </Badge>
               <Badge className="bg-primary text-primary-foreground px-4 py-2 text-base hover:scale-105 transition-transform">
-                DeFi Protocols
+                Artificial Intelligence
               </Badge>
               <Badge className="bg-primary text-primary-foreground px-4 py-2 text-base hover:scale-105 transition-transform">
-                Machine Learning
+                Neural Networks
               </Badge>
               <Badge className="bg-primary text-primary-foreground px-4 py-2 text-base hover:scale-105 transition-transform">
                 Full-Stack Development
               </Badge>
+            </div>
+          </div>
+        </Card>
+
+        {/* Currently Available For */}
+        <Card className="mt-8 p-8 bg-gradient-secondary border-primary/20">
+          <div className="text-center">
+            <h3 className="text-2xl font-bold text-primary mb-4">Currently Available For</h3>
+            <div className="grid md:grid-cols-2 gap-4 mt-6">
+              <div className="flex items-center gap-3 justify-center md:justify-start">
+                <div className="w-2 h-2 bg-primary rounded-full"></div>
+                <span className="text-muted-foreground">Blockchain development projects</span>
+              </div>
+              <div className="flex items-center gap-3 justify-center md:justify-start">
+                <div className="w-2 h-2 bg-primary rounded-full"></div>
+                <span className="text-muted-foreground">Smart contract auditing</span>
+              </div>
+              <div className="flex items-center gap-3 justify-center md:justify-start">
+                <div className="w-2 h-2 bg-primary rounded-full"></div>
+                <span className="text-muted-foreground">Full-stack dApp development</span>
+              </div>
+              <div className="flex items-center gap-3 justify-center md:justify-start">
+                <div className="w-2 h-2 bg-primary rounded-full"></div>
+                <span className="text-muted-foreground">AI/ML consulting</span>
+              </div>
             </div>
           </div>
         </Card>
