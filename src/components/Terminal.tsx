@@ -58,17 +58,13 @@ const Terminal: React.FC<TerminalProps> = ({ onNavigate }) => {
       '/theme [1-4]     - Switch website theme (no arg cycles)',
       '/mode [1-5]      - Switch terminal mode (no arg cycles)',
       '/matrix          - Matrix rain effect',
-      '/social          - Show social links',
       '/github          - Open GitHub profile',
       '/linkedin        - Open LinkedIn profile',
       '/gmail           - Open Gmail compose',
       '/whoami          - About me',
-      '/pwd             - Current section',
-      '/ls or /sl       - List sections',
+      // '/pwd' removed
       '/comment         - Jump to add comment',
       '/comments        - Open comments gallery',
-      '/version         - Show site version',
-      '/uptime          - Show session uptime',
       '/admin <pass>    - Enter admin mode'
     ],
     '/about': () => { onNavigate('about'); return ['Navigating to About section...']; },
@@ -92,7 +88,7 @@ const Terminal: React.FC<TerminalProps> = ({ onNavigate }) => {
       '- /theme [1-4]         - Preview themes',
       '- /mode [1-5]          - Preview terminal modes'
     ] : ['Admin required. Use /admin <password>.'],
-    '/version': () => [`Version: ${localStorage.getItem('site-version') || '1.0.0'}`],
+    // '/version' removed per request
     '/setversion': (args?: string) => { if (!isAdmin) return ['Admin required.']; const v=(args||'').trim(); if(!v) return ['Usage: /setversion <x.y.z>']; localStorage.setItem('site-version', v); return [`Version set to ${v}`]; },
     '/setdefaulttheme': (args?: string) => { 
       if (!isAdmin) return ['Admin required.']; 
@@ -104,15 +100,7 @@ const Terminal: React.FC<TerminalProps> = ({ onNavigate }) => {
       localStorage.setItem('default-theme', t); 
       return [`Default theme saved: ${t}`]; 
     },
-    '/uptime': () => {
-      const start = sessionStorage.getItem('session-start') || Date.now().toString();
-      if (!sessionStorage.getItem('session-start')) sessionStorage.setItem('session-start', start);
-      const uptime = Math.floor((Date.now() - parseInt(start)) / 1000);
-      const hours = Math.floor(uptime / 3600);
-      const minutes = Math.floor((uptime % 3600) / 60);
-      const seconds = uptime % 60;
-      return [`Session uptime: ${hours}h ${minutes}m ${seconds}s`];
-    },
+    // '/uptime' removed per request
     '/theme': (args?: string) => {
       const validThemes = ['dark', 'light', 'hacker', 'cosmic'];
       const root = document.documentElement;
@@ -155,12 +143,7 @@ const Terminal: React.FC<TerminalProps> = ({ onNavigate }) => {
       setTimeout(() => document.body.classList.remove('matrix-effect'), 3000);
       return ['Matrix rain effect activated...', 'Wake up, Neo...'];
     },
-    '/social': () => [
-      'Social links:',
-      ' - Email: preethamak07@gmail.com',
-      ' - GitHub: https://github.com/preethamak',
-      ' - LinkedIn: https://www.linkedin.com/in/preetham-a-k-18b97931b/'
-    ],
+    // removed '/social' per request
     '/github': () => { window.open('https://github.com/preethamak', '_blank'); return ['Opening GitHub profile...']; },
     '/linkedin': () => { window.open('https://www.linkedin.com/in/preetham-a-k-18b97931b/', '_blank'); return ['Opening LinkedIn profile...']; },
     '/gmail': () => { window.open('https://mail.google.com/mail/?view=cm&fs=1&to=preethamak07@gmail.com', '_blank'); return ['Opening Gmail compose...']; },
@@ -193,12 +176,29 @@ const Terminal: React.FC<TerminalProps> = ({ onNavigate }) => {
       '╚═══════════════════════════════════════╝',
       'Building decentralized systems with secure smart contracts and AI insights.'
     ],
-    '/pwd': () => { const currentSection = window.location.hash || '/home'; return [`Current section: ${currentSection}`]; },
-    '/ls': () => [ 'Available sections:', 'hero/', 'about/', 'skills/', 'projects/', 'contact/', 'comments/' ],
-    '/sl': () => commands['/ls'](),
+    // '/pwd' removed per request
+    // '/ls' removed per request
+    // '/sl' removed per request
   };
 
   const allCommands = Object.keys(commands);
+
+  // Inject admin-only help when logged in
+  const getHelpOutput = () => {
+    const base = commands['/help']();
+    if (isAdmin) {
+      return [
+        ...base,
+        '— Admin commands —',
+        '/control         - Show developer controls',
+        '/deletecomment   - Delete comment by id',
+        '/clearcomments   - Clear all comments',
+        '/setversion      - Set site version',
+        '/setdefaulttheme - Set default theme',
+      ];
+    }
+    return base;
+  };
 
   useEffect(() => {
     if (currentInput) {
@@ -230,7 +230,11 @@ const Terminal: React.FC<TerminalProps> = ({ onNavigate }) => {
     
     let output: string[];
     if (command) {
-      output = command(args.join(' '));
+      if (commandName === '/help') {
+        output = getHelpOutput();
+      } else {
+        output = command(args.join(' '));
+      }
     } else if (trimmedInput === '') {
       output = [];
     } else {

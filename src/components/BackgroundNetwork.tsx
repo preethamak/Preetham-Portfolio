@@ -34,9 +34,10 @@ const BackgroundNetwork: React.FC = () => {
 
     type Node = { x: number; y: number; vx: number; vy: number };
     const nodes: Node[] = [];
-    const targetCount = Math.max(28, Math.min(80, Math.floor(window.innerWidth / 20)));
-    const speed = 0.35;
-    const distance = Math.min(160, Math.max(90, window.innerWidth * 0.08));
+    // Medium frequency: moderate count and distance for visible but subtle motion
+    const targetCount = Math.max(40, Math.min(120, Math.floor(window.innerWidth / 16)));
+    const speed = 0.30;
+    const distance = Math.min(140, Math.max(100, window.innerWidth * 0.07));
 
     const init = () => {
       nodes.length = 0;
@@ -79,8 +80,8 @@ const BackgroundNetwork: React.FC = () => {
       ctx.fillRect(0, 0, canvas.width, canvas.height);
 
       // Update and draw
-      const lineColor = getHSL(primary, 0.18);
-      const dotColor = getHSL(primary, 0.5);
+      const lineColor = getHSL(primary, 0.14);
+      const dotColor = getHSL(primary, 0.4);
 
       for (let i = 0; i < nodes.length; i++) {
         const n = nodes[i];

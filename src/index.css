@@ -352,6 +352,12 @@ html[data-theme="neo"] {
     background-clip: text;
   }
 
+  /* Subtle animated gradient for professional headings */
+  .text-gradient-animated {
+    background-size: 200% 100% !important;
+    animation: shimmer 10s linear infinite;
+  }
+
   .glow-primary {
     box-shadow: var(--glow-primary);
   }

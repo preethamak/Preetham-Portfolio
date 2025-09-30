@@ -1,6 +1,5 @@
 import React, { useEffect, useState, useRef } from 'react';
 import * as THREE from 'three';
-import preethamPhoto from "@/assets/preetham-photo.jpg";
 
 interface IntroAnimationProps {
   onComplete: () => void;
@@ -123,13 +122,7 @@ const IntroAnimation: React.FC<IntroAnimationProps> = ({ onComplete }) => {
 
   return (
     <div className="fixed inset-0 z-[9999] bg-background flex items-center justify-center overflow-hidden">
-      {/* Background Image */}
-      <div 
-        className="absolute inset-0 bg-cover bg-center bg-no-repeat opacity-20"
-        style={{ backgroundImage: `url(${preethamPhoto})` }}
-      />
-      
-      {/* Three.js Magnetic Background */}
+      {/* Three.js Magnetic Background only (no photo) */}
       <div ref={mountRef} className="absolute inset-0" />
       
       {/* Loading Phase */}
@@ -142,7 +135,9 @@ const IntroAnimation: React.FC<IntroAnimationProps> = ({ onComplete }) => {
       {/* Name Animation */}
       {(phase === 'name' || phase === 'effects' || phase === 'complete') && (
         <div className="relative z-10 text-center px-4">
-          <div className={`transition-all duration-1000 ${phase === 'name' ? 'opacity-100 scale-100' : 'opacity-100 scale-105'}`}>
+          {/* Glass panel */}
+          <div className="mx-auto max-w-[90vw] sm:max-w-3xl rounded-2xl bg-background/30 backdrop-blur-lg border border-white/10 shadow-xl p-4 sm:p-8 mb-4 sm:mb-8 [transform-style:preserve-3d] [perspective:1000px]">
+            <div className={`transition-all duration-1000 ${phase === 'name' ? 'opacity-100 scale-100' : 'opacity-100 scale-105'} [transform:rotateX(0deg)_rotateY(0deg)]`}> 
             <h1 className="text-6xl sm:text-7xl md:text-8xl lg:text-9xl font-display font-bold tracking-wider">
               <span className={`inline-block transition-all duration-700 text-gradient ${
                 phase === 'name' ? 'transform translate-x-[-100px] opacity-0' : 'transform translate-x-0 opacity-100'
@@ -196,6 +191,7 @@ const IntroAnimation: React.FC<IntroAnimationProps> = ({ onComplete }) => {
                 K
               </span>
             </h1>
+            </div>
           </div>
         </div>
       )}

@@ -8,7 +8,7 @@ const AboutSection = () => {
       institution: "REVA University",
       degree: "B.Tech in Artificial Intelligence and Machine Learning",
       period: "2024-2028",
-      grade: "CGPA: 9.2/10",
+      grade: "CGPA: 9.1/10",
       icon: <GraduationCap className="w-6 h-6" />
     },
     {
@@ -57,13 +57,13 @@ const AboutSection = () => {
           </p>
         </div>
 
-        <div className="grid lg:grid-cols-2 gap-12">
+        <div className="grid lg:grid-cols-2 gap-12 items-start">
           {/* Education */}
           <div className="space-y-6">
             <h3 className="text-2xl font-bold text-primary mb-6">Education</h3>
             <div className="space-y-4">
               {education.map((edu, index) => (
-                <Card key={index} className="p-6 hover:border-primary/50 transition-smooth">
+                <Card key={index} className="p-6 hover:border-primary/50 transition-smooth glass-effect">
                   <div className="flex items-start gap-4">
                     <div className="text-primary">{edu.icon}</div>
                     <div className="flex-1">
@@ -87,7 +87,7 @@ const AboutSection = () => {
             <h3 className="text-2xl font-bold text-primary mb-6">Experience</h3>
             <div className="space-y-4">
               {internships.map((intern, index) => (
-                <Card key={index} className="p-6 hover:border-primary/50 transition-smooth">
+                <Card key={index} className="p-6 hover:border-primary/50 transition-smooth glass-effect">
                   <div className="flex items-start gap-4">
                     <div className="text-primary">
                       <Briefcase className="w-6 h-6" />
@@ -103,7 +103,7 @@ const AboutSection = () => {
             </div>
 
             {/* Passion Statement */}
-            <Card className="p-6 bg-gradient-secondary border-primary/20 mt-8">
+            <Card className="p-6 bg-secondary/50 backdrop-blur-md border-primary/20 mt-8 glass-effect">
               <h4 className="text-xl font-bold text-primary mb-4">My Passion</h4>
               <p className="text-muted-foreground leading-relaxed">
                 I'm deeply passionate about <span className="text-primary font-semibold">blockchain technology</span> and its potential to revolutionize how we think about trust, transparency, and decentralization. My journey combines the analytical power of AI & ML with the innovative spirit of blockchain development.

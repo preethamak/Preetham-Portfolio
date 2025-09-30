@@ -61,7 +61,7 @@ const SkillsSection = () => {
           {skillCategories.map((category, index) => (
             <Card 
               key={index} 
-              className="p-8 hover:border-primary/50 transition-smooth group hover:glow-secondary"
+              className="p-8 hover:border-primary/50 transition-smooth group hover:glow-secondary glass-effect"
             >
               <div className="flex items-center gap-4 mb-6">
                 <div className="p-3 bg-primary/10 rounded-lg text-primary group-hover:animate-pulse-slow">
@@ -89,7 +89,7 @@ const SkillsSection = () => {
 
 
         {/* Core Proficiency Highlight */}
-        <Card className="mt-8 p-8 bg-gradient-secondary border-primary/20">
+        <Card className="mt-8 p-8 bg-secondary/50 backdrop-blur-md border-primary/20 glass-effect">
           <div className="text-center">
             <h3 className="text-2xl font-bold text-primary mb-4">Core Proficiency</h3>
             <p className="text-lg text-muted-foreground mb-6">
@@ -113,7 +113,7 @@ const SkillsSection = () => {
         </Card>
 
         {/* Currently Available For */}
-        <Card className="mt-8 p-8 bg-gradient-secondary border-primary/20">
+        <Card className="mt-8 p-8 bg-secondary/50 backdrop-blur-md border-primary/20 glass-effect">
           <div className="text-center">
             <h3 className="text-2xl font-bold text-primary mb-4">Currently Available For</h3>
             <div className="grid md:grid-cols-2 gap-4 mt-6">

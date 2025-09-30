@@ -57,7 +57,7 @@ const ContactSection = () => {
         <div className="grid lg:grid-cols-2 gap-12">
           {/* Contact Information */}
           <div className="space-y-8">
-            <Card className="p-8 bg-gradient-secondary border-primary/20">
+            <Card className="p-8 bg-secondary/50 backdrop-blur-md border-primary/20 glass-effect">
               <h3 className="text-2xl font-bold text-primary mb-6">Get in Touch</h3>
               <p className="text-muted-foreground mb-8 leading-relaxed">
                 I'm always excited to discuss new opportunities in blockchain development, 
@@ -96,7 +96,7 @@ const ContactSection = () => {
               <h3 className="text-xl font-bold text-primary">Connect on Social</h3>
               <div className="grid gap-4">
                 {socialLinks.map((social, index) => (
-                  <Card key={index} className="p-4 hover:border-primary/50 transition-smooth group">
+                  <Card key={index} className="p-4 hover:border-primary/50 transition-smooth group glass-effect">
                     <a 
                       href={social.href}
                       target="_blank"
@@ -142,7 +142,7 @@ const ContactSection = () => {
               </div>
             </Card>
 
-            <Card className="p-8 bg-gradient-secondary border-primary/20">
+            <Card className="p-8 bg-secondary/50 backdrop-blur-md border-primary/20 glass-effect">
               <h3 className="text-xl font-bold text-primary mb-4">Currently Available For</h3>
               <div className="space-y-3">
                 <div className="flex items-center gap-3">

@@ -54,12 +54,19 @@ const CommentsSection: React.FC = () => {
     formRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
   };
 
+  const hasComments = comments.length > 0;
+
+  if (!hasComments) {
+    return null;
+  }
+
   return (
     <section id="comments" className="py-16">
       <div className="container mx-auto px-4">
         <h2 className="text-3xl font-bold mb-6 text-gradient">Terminal Comments</h2>
 
-        {/* Form */}
+        {/* Form - render only when there are existing comments */}
+        {hasComments && (
         <Card className="mb-8 backdrop-blur-sm">
           <CardHeader>
             <CardTitle className="text-base">
@@ -90,9 +97,10 @@ const CommentsSection: React.FC = () => {
             </form>
           </CardContent>
         </Card>
+        )}
 
         {/* Gallery */}
-        {comments.length > 0 && (
+        {hasComments && (
           <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
             {comments.map((c) => (
               <Card key={c.id} className="backdrop-blur-sm">

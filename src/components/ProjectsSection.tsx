@@ -12,6 +12,7 @@ const ProjectsSection = () => {
       icon: <Database className="w-8 h-8" />,
       category: "Decentralized Storage",
       github: "https://github.com/preethamak/BlockDrive",
+      docs: "https://deepwiki.com/preethamak/BlockDrive/1-overview",
       features: [
         "Files live on IPFS (not centralized servers)",
         "Access controlled via blockchain",
@@ -27,6 +28,7 @@ const ProjectsSection = () => {
       category: "EdTech Platform",
       github: "https://github.com/preethamak/CodeLab1",
       deployment: "https://code-lab123.vercel.app",
+      docs: "https://deepwiki.com/preethamak/CodeLab1/1-overview",
       features: [
         "Multi-language support (C, C++, Python, Java, SQL)",
         "AI-based test case generation & evaluation",
@@ -35,12 +37,13 @@ const ProjectsSection = () => {
       ]
     },
     {
-      title: "Micro-grad & Bigram Language Model",
+      title: "Micrograd & Bigram Language Model",
       description: "Built a character-level language model from scratch implementing micro-grad for automatic differentiation and a bigram model for natural language processing tasks.",
       technologies: ["Python", "PyTorch", "NumPy", "Machine Learning"],
       icon: <Brain className="w-8 h-8" />,
       category: "AI/ML",
       github: "https://github.com/preethamak/micrograd",
+      docs: "https://deepwiki.com/preethamak/MakeMore",
       features: [
         "Custom automatic differentiation",
         "Character-level processing",
@@ -55,6 +58,7 @@ const ProjectsSection = () => {
       icon: <Brain className="w-8 h-8" />,
       category: "AI/ML",
       github: "https://github.com/preethamak/GPT",
+      docs: "https://deepwiki.com/preethamak/GPT/1-overview",
       features: [
         "Fully implemented Transformer architecture",
         "Self-attention and cross-attention mechanics",
@@ -94,7 +98,7 @@ const ProjectsSection = () => {
           {projects.map((project, index) => (
             <Card 
               key={index} 
-              className="p-8 hover:border-primary/50 transition-smooth group hover:glow-secondary"
+              className="p-8 hover:border-primary/40 transition-smooth group backdrop-blur-md bg-secondary/50 will-change-transform [transform-style:preserve-3d] hover:[transform:translateY(-4px)_rotateX(1deg)_rotateY(2deg)]"
             >
               <div className="grid lg:grid-cols-3 gap-8">
                 {/* Project Info */}
@@ -156,6 +160,13 @@ const ProjectsSection = () => {
                         GitHub
                       </a>
                     </Button>
+                    {project.docs && (
+                      <Button size="sm" variant="outline" className="border-primary/40 text-primary hover:bg-primary/10" asChild>
+                        <a href={project.docs} target="_blank" rel="noopener noreferrer">
+                          Docs
+                        </a>
+                      </Button>
+                    )}
                     {project.deployment && (
                       <Button size="sm" variant="outline" className="border-secondary text-secondary-foreground hover:bg-secondary" asChild>
                         <a href={project.deployment} target="_blank" rel="noopener noreferrer">

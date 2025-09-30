@@ -39,17 +39,7 @@ const Index = () => {
         {/* Magnetic Background Layers */}
         <BackgroundNetwork />
         
-        {/* Parallax scroll indicator */}
-        <div className="fixed top-1/2 right-8 -translate-y-1/2 z-50 space-y-2">
-          {['hero', 'about', 'skills', 'projects', 'contact'].map((section, index) => (
-            <button
-              key={section}
-              onClick={() => navigateToSection(section)}
-              className="block w-2 h-8 bg-primary/20 hover:bg-primary/60 transition-all rounded-full"
-              aria-label={`Navigate to ${section}`}
-            />
-          ))}
-        </div>
+        {/* Parallax scroll indicator removed per request */}
 
         <Navigation />
         <main className="relative z-10">

@@ -37,12 +37,12 @@ const EnhancedHeroSection = () => {
 
       <div className="max-w-6xl mx-auto grid lg:grid-cols-2 gap-12 items-center z-10">
         {/* Text Content */}
-        <div className="space-y-8 fade-in-element">
+        <div className="space-y-8 fade-in-element glass-effect rounded-2xl p-6">
           <div className="space-y-4">
             <h1 className="text-5xl lg:text-7xl font-display font-bold">
-              <span className="text-gradient animate-pulse">Preetham</span>
+              <span className="text-gradient text-gradient-animated">Preetham</span>
               <br />
-              <span className="text-foreground">AK</span>
+              <span className="text-gradient text-gradient-animated">AK</span>
             </h1>
             <div className="text-xl lg:text-2xl text-muted-foreground font-body">
               <span className="text-primary font-semibold">Blockchain Developer</span> & AI Engineer
@@ -94,17 +94,17 @@ const EnhancedHeroSection = () => {
 
         {/* Enhanced Profile Card */}
         <div className="flex justify-center fade-in-element">
-          <Card className="p-8 bg-gradient-secondary border-primary/20 glow-secondary hover:glow-primary transition-all duration-500 group">
+          <Card className="p-8 bg-gradient-secondary/60 backdrop-blur-md border-primary/10 transition-all duration-500 group hover:border-primary/30">
             <div className="space-y-6 text-center">
               <div className="relative">
-                <div className="w-32 h-32 mx-auto rounded-full overflow-hidden group-hover:scale-110 transition-transform duration-300 shadow-2xl border-4 border-primary/20">
+                <div className="w-32 h-32 mx-auto rounded-full overflow-hidden group-hover:scale-110 transition-transform duration-300 shadow-xl border-4 border-primary/15">
                   <img 
                     src={preethamPhoto} 
                     alt="Preetham AK" 
                     className="w-full h-full object-cover"
                   />
                 </div>
-                <div className="absolute -inset-2 bg-gradient-primary rounded-full opacity-10 blur group-hover:opacity-15 transition-opacity"></div>
+                <div className="absolute -inset-2 bg-gradient-primary rounded-full opacity-5 blur-sm group-hover:opacity-10 transition-opacity"></div>
               </div>
               
               <div className="space-y-2">
