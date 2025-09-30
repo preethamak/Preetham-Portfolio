@@ -103,13 +103,13 @@ const AboutSection = () => {
             </div>
 
             {/* Passion Statement */}
-            <Card className="p-6 bg-secondary/50 backdrop-blur-md border-primary/20 mt-8 glass-effect">
+            <Card className="p-6 bg-secondary/50 backdrop-blur-md border-primary/20 mt-8 glass-effect fade-in-element">
               <h4 className="text-xl font-bold text-primary mb-4">My Passion</h4>
               <p className="text-muted-foreground leading-relaxed">
                 I'm deeply passionate about <span className="text-primary font-semibold">blockchain technology</span> and its potential to revolutionize how we think about trust, transparency, and decentralization. My journey combines the analytical power of AI & ML with the innovative spirit of blockchain development.
               </p>
               <p className="text-muted-foreground leading-relaxed mt-4">
-                From building decentralized funding platforms to creating secure file storage systems, I'm committed to developing solutions that push the boundaries of what's possible in the decentralized web.
+                I’m equally fascinated by <span className="text-primary font-semibold">machine learning and neural networks</span>—from building small-scale models to understanding how modern architectures evolve. That blend of decentralized systems and intelligent algorithms is where I thrive.
               </p>
             </Card>
           </div>

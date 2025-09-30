@@ -61,7 +61,7 @@ const SkillsSection = () => {
           {skillCategories.map((category, index) => (
             <Card 
               key={index} 
-              className="p-8 hover:border-primary/50 transition-smooth group hover:glow-secondary glass-effect"
+              className="p-8 hover:border-primary/50 transition-smooth group hover:glow-secondary glass-effect fade-in-element"
             >
               <div className="flex items-center gap-4 mb-6">
                 <div className="p-3 bg-primary/10 rounded-lg text-primary group-hover:animate-pulse-slow">

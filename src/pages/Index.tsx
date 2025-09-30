@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Navigation from "@/components/Navigation";
 import EnhancedHeroSection from "@/components/EnhancedHeroSection";
 import AboutSection from "@/components/AboutSection";
@@ -30,6 +30,24 @@ const Index = () => {
   const handleIntroComplete = () => {
     setShowIntro(false);
   };
+
+  // Global scroll-reveal for elements with .fade-in-element
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('animate-fade-in');
+            observer.unobserve(entry.target);
+          }
+        });
+      },
+      { threshold: 0.1 }
+    );
+    const elements = document.querySelectorAll('.fade-in-element');
+    elements.forEach((el) => observer.observe(el));
+    return () => observer.disconnect();
+  }, []);
 
   return (
     <TerminalProvider>
