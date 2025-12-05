@@ -34,13 +34,17 @@ const AboutSection = () => {
       description: "Full-stack development and client project delivery"
     },
     {
+      company: "Google Developer Group",
+      role: "Development Team",
+    },
+    {
       company: "Codveda",
       role: "Machine Learning Intern", 
       description: "Developing ML models and data analysis projects"
     },
     {
       company: "Equdator",
-      role: "Web Developer & AI Engineer",
+      role: "Web Developer & AI Intern",
       description: "Building web applications and implementing AI solutions"
     }
   ];
